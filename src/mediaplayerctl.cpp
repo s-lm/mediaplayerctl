@@ -68,7 +68,7 @@ auto getMediaPlayerInstances(const Connection& connection)
         std::cerr << "Got an error: '" << error.what() << "'." << std::endl;
     }
 
-    return std::move(result);
+    return result;
 }
 
 
@@ -125,7 +125,7 @@ auto getMediaPlayerStates(const Connection& connection, const PlayerSet& players
         }
     }
 
-    return std::move(result);
+    return result;
 }
 
 
@@ -143,7 +143,7 @@ auto execMediaPlayerMethod(const Connection& connection,
     }
 
     try {
-        // query state of players
+        // call player method
         proxy->call_sync(meth);
 
     } catch (const Glib::Error& error) {
@@ -161,7 +161,7 @@ auto findPlayer(const PlayerStates& pstates, std::vector<State>&& states)
             if (entry.second == state)
                 result.insert(entry.first);
 
-    return std::move(result);
+    return result;
 }
 
 
@@ -215,7 +215,7 @@ auto evalActions(const std::string& method, const PlayerStates& states)
         exit(127);
     }
 
-    return std::move(result);
+    return result;
 }
 
 
@@ -227,7 +227,6 @@ auto main(int argc, char** argv)
 
     // eval cli args
     std::string method = eval_args(argc, argv);
-
 
     // get the user session bus connection.
     auto connection = Gio::DBus::Connection::get_sync(
